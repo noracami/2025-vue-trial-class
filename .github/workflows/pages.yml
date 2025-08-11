@@ -16,7 +16,6 @@ concurrency:
 
 jobs:
   deploy:
-    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,22 +23,24 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
-          cache: 'pnpm'
-          cache-dependency-path: pnpm-lock.yaml
 
-      # 關鍵：先安裝 pnpm，再執行任何 pnpm 指令
       - uses: pnpm/action-setup@v3
         with:
           version: 9
           run_install: false
 
-      # 可選：診斷 pnpm 是否在 PATH
-      - run: which pnpm && pnpm -v
+      - uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - run: pnpm -v && which pnpm
 
       - name: Install deps
         run: pnpm install --frozen-lockfile
-        env:
-          CI: 'true'
+        env: { CI: 'true' }
 
       - name: Build
         run: pnpm run build
