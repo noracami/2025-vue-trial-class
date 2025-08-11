@@ -28,6 +28,11 @@ jobs:
           node-version: 'lts/*'
           cache: 'pnpm'
 
+      - name: Enable corepack (pnpm)
+        run: |
+          corepack enable
+          corepack prepare pnpm@9 --activate
+
       - name: Install deps
         run: pnpm ci
 
