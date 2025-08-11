@@ -19,36 +19,34 @@ jobs:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
           cache: 'pnpm'
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
+      # 關鍵：先安裝 pnpm，再執行任何 pnpm 指令
+      - uses: pnpm/action-setup@v3
         with:
           version: 9
           run_install: false
 
+      # 可選：診斷 pnpm 是否在 PATH
+      - run: which pnpm && pnpm -v
+
       - name: Install deps
         run: pnpm install --frozen-lockfile
+        env:
+          CI: 'true'
 
       - name: Build
         run: pnpm run build
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
-
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
