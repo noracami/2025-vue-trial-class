@@ -82,24 +82,14 @@ const updateStockManually = (index) => {
             {{ price }}
           </td>
           <td class="flex justify-between items-center">
-            <button
-              class="bg-gray-200 dark:bg-gray-700 p-2 rounded cursor-pointer"
-              @click="updateStock(index, -1)"
-            >
-              -
-            </button>
+            <button class="button" @click="updateStock(index, -1)">-</button>
             <p
               @click="updateStockManually(index)"
               class="grow text-center cursor-pointer hover:underline"
             >
               {{ stock }}
             </p>
-            <button
-              class="bg-gray-200 dark:bg-gray-700 p-2 rounded cursor-pointer"
-              @click="updateStock(index, 1)"
-            >
-              +
-            </button>
+            <button class="button" @click="updateStock(index, 1)">+</button>
           </td>
         </tr>
       </tbody>
@@ -123,5 +113,9 @@ const updateStockManually = (index) => {
   > td {
     @apply px-6 py-4 text-gray-700 dark:text-gray-300;
   }
+}
+
+.button {
+  @apply text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 p-2 rounded cursor-pointer;
 }
 </style>

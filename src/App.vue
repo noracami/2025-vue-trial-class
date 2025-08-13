@@ -15,4 +15,18 @@ import { RouterLink, RouterView } from 'vue-router';
   <RouterView />
 </template>
 
-<style scoped></style>
+<style scoped>
+@reference './assets/main.css';
+
+nav {
+  @apply flex gap-8;
+}
+
+nav a {
+  @apply underline p-8 transition duration-300;
+}
+
+nav a:hover {
+  @apply bg-gray-200 dark:bg-gray-700 scale-125 no-underline;
+}
+</style>
